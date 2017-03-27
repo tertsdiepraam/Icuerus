@@ -1,16 +1,31 @@
 var content
 var input
+var save
+var load
+var json_file
+var output
+var tracks = {}
 
 window.onload = function() {
   content = document.getElementById("content")
   input = document.getElementById("input")
+  save = document.getElementById("save")
+  load = document.getElementById("load")
+  output = document.getElementById("lalala")
+  document.getElementById("load_button").onclick = function(){
+    load.click()
+  }
   input.addEventListener("change", createAudioElements)
+  save.onclick = saveJSON
+  load.addEventListener("change", loadJSON)
+
+  document.addEventListener("keydown", hotkey)
 }
 
 function createAudioElements() {
+  icaudio_objects = []
   for (var i=0; i<input.files.length; i++) {
     var file = input.files[i]
-
     // create a div
     let div = document.createElement("DIV")
     div.className = "audiobox"
@@ -84,6 +99,28 @@ function createAudioElements() {
     fadeOut.appendChild(fadeOut_button)
     fadeOut.appendChild(fadeOut_input)
 
+    // hotkey
+    let hotkey_text = document.createElement("P")
+    hotkey_text.innerHTML = "Hotkey:"
+    hotkey_text.style.margin = "0px"
+    let hotkey_input = document.createElement("INPUT")
+    hotkey_input.pattern = ".{0,1}"
+    let hotkey_div = document.createElement("DIV")
+    hotkey_div.style.display = "flex"
+    hotkey_div.appendChild(hotkey_text)
+    hotkey_div.appendChild(hotkey_input)
+
+    // loop
+    let loop_text = document.createElement("P")
+    loop_text.innerHTML = "Loop:"
+    loop_text.style.margin = "0px"
+    let loop_input = document.createElement("INPUT")
+    loop_input.type = "checkbox"
+    let loop_div = document.createElement("DIV")
+    loop_div.style.display = "flex"
+    loop_div.appendChild(loop_text)
+    loop_div.appendChild(loop_input)
+
     // set audio src
     audio.src = URL.createObjectURL(file)
 
@@ -96,8 +133,80 @@ function createAudioElements() {
     div.appendChild(audio_div)
     div.appendChild(fadeIn)
     div.appendChild(fadeOut)
+    div.appendChild(hotkey_div)
+    div.appendChild(loop_div)
 
     // add it to the content div
     content.appendChild(div)
+
+    let track = {
+      audio: audio,
+      fadeIn: fadeIn_input,
+      fadeOut: fadeOut_input,
+      hotkey: hotkey_input,
+      loop: loop_input
+    }
+    track.loop.addEventListener("change", function() {
+      track.audio.loop = loop_input.checked
+    })
+    tracks[file.name] = track
+  }
+}
+
+function saveJSON(){
+  var save_tracks = {}
+  for (var track in tracks) {
+    if (tracks.hasOwnProperty(track)) {
+      console.log(track)
+      save_tracks[track] = {
+        volume: tracks[track].audio.volume,
+        fadeIn: tracks[track].fadeIn.value,
+        fadeOut: tracks[track].fadeOut.value,
+        hotkey: tracks[track].hotkey.value,
+        loop: tracks[track].loop.checked
+      }
+    }
+  }
+  var bb = new Blob([JSON.stringify(save_tracks)], {type: 'text/plain'})
+  var a = document.getElementById("save_link")
+  a.download = 'icuerus.json'
+  if (a.href) {
+    window.URL.revokeObjectURL(a.href)
+  }
+  a.href = window.URL.createObjectURL(bb)
+  a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':')
+  a.click()
+}
+
+function loadJSON() {
+  var reader = new FileReader()
+  reader.onload = function(e) {
+    console.log(e.target.result)
+    var json = JSON.parse(e.target.result)
+    console.log(json)
+    for (var track in json) {
+      if (json.hasOwnProperty(track) && tracks.hasOwnProperty(track)) {
+        tracks[track].audio.volume = json[track].volume
+        tracks[track].fadeIn.value = json[track].fadeIn
+        tracks[track].fadeOut.value = json[track].fadeOut
+        tracks[track].hotkey.value = json[track].hotkey
+        tracks[track].loop.checked = json[track].loop
+      }
+    }
+  }
+  json_file = load.files[0]
+  reader.readAsText(json_file)
+}
+
+function hotkey(event) {
+  for (var track in tracks) {
+    if (event.key === tracks[track].hotkey.value) {
+      audio = tracks[track].audio
+      if (audio.paused) {
+        audio.play()
+      } else {
+        audio.pause()
+      }
+    }
   }
 }
