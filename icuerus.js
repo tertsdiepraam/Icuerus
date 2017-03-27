@@ -23,7 +23,7 @@ window.onload = function() {
 }
 
 function createAudioElements() {
-  icaudio_objects = []
+  icuerus_objects = []
   for (var i=0; i<input.files.length; i++) {
     var file = input.files[i]
     // create a div
