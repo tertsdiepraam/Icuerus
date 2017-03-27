@@ -53,18 +53,19 @@ function createAudioElements() {
       var original_volume = audio.volume
       audio.volume = 0
       audio.play()
+      var interval = 10
       var fadeAudio = setInterval(function() {
         if (audio.volume >= original_volume) {
           clearInterval(fadeAudio)
         } else {
-          if (audio.volume + original_volume/fadeIn_input.value*(200/1000) >= original_volume) {
+          if (audio.volume + original_volume/fadeIn_input.value*(interval/1000) >= original_volume) {
             audio.volume = original_volume
             clearInterval(fadeAudio)
           } else {
-            audio.volume += original_volume/fadeIn_input.value*(200/1000)
+            audio.volume += original_volume/fadeIn_input.value*(interval/1000)
           }
         }
-      }, 200)
+      }, interval)
     }
 
     let fadeIn = document.createElement("DIV")
@@ -81,16 +82,17 @@ function createAudioElements() {
         return
       }
       var original_volume = audio.volume
+      var interval = 10
       var fadeAudio = setInterval(function(){
         if (audio.paused) {
           audio.volume = original_volume
           clearInterval(fadeAudio)
         }
-        if (audio.volume - original_volume/fadeOut_input.value*(200/1000) <= 0) {
+        if (audio.volume - original_volume/fadeOut_input.value*(interval/1000) <= 0) {
           audio.volume = 0
           audio.pause()
         } else {
-          audio.volume -= original_volume/fadeOut_input.value*(200/1000)
+          audio.volume -= original_volume/fadeOut_input.value*(interval/1000)
         }
       }, 200)
     }
