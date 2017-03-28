@@ -15,11 +15,6 @@ div#content {
   justify-content: center;
 }
 
-input[type='checkbox'] {
-  height: 100%;
-  width: 100%;
-}
-
 div.audiobox {
   display: flex;
   flex-direction: column;
