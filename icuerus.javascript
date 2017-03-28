@@ -193,6 +193,8 @@ function loadJSON() {
         tracks[track].fadeOut.value = json[track].fadeOut
         tracks[track].hotkey.value = json[track].hotkey
         tracks[track].loop.checked = json[track].loop
+        //
+        tracks[track].audio.loop = json[track].loop
       }
     }
   }

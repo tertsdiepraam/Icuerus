@@ -1,6 +1,12 @@
 body {
+  font-family: verdana;
   background-color: black;
   color: white;
+  font-size: 120%;
+}
+
+input {
+  font-size: 90%;
 }
 
 div#content {
@@ -9,14 +15,19 @@ div#content {
   justify-content: center;
 }
 
+input[type='checkbox'] {
+  height: 100%;
+  width: 100%;
+}
+
 div.audiobox {
   display: flex;
   flex-direction: column;
   margin: 10px;
   padding: 10px;
-  background-color: #1A1A1A;
+  background-color: #101010;
   align-items: center;
-  width: 20%
+  width: 25%
 }
 
 p.audiotitle {
