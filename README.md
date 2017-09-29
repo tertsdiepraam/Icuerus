@@ -1,8 +1,7 @@
-# Icaudio
-Icaudio will allow you to cue music in theatrical plays or at other events which require similar functionality. It is built with HTML5, JavaScript and CSS, which makes it cross-platform and easily accesible. The functionality of Icaudio includes hotkeys, looping, fading and seeking. It also allows for saving and loading JSON files.
+# Icuerus
+Icuerus will allow you to cue music in theatrical plays or at other events which require similar functionality. It is built with HTML5, JavaScript and CSS, which makes it cross-platform and easily accesible. The functionality of Icaudio includes hotkeys, looping, fading and seeking. It also allows for saving and loading JSON files.
 
-## Installation
-Download the zip file and extract the contents, then open the index.html file with your favorite browser.
+This was a quick project that I made for a school play I took part in. It was successfully used at the performance.
 
 ## Usage
 Sound files are loaded with the "Choose File" button in the top left of the screen.
